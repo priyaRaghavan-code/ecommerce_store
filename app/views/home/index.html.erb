@@ -1,0 +1,32 @@
+<h1>Products</h1>
+
+<% @products.each do |product| %>
+  <div style="margin-bottom: 10px;">
+    <strong><%= product[:name] %></strong>
+    - ₹<%= product[:price] %>
+
+
+    <% unless @cart[product[:id]] %>
+      <%= button_to "Add",
+        cart_items_path(product_id: product[:id]),
+        method: :post %>
+    <% end %>
+
+    <% if @cart[product[:id]] %>
+      <%= button_to "Remove",
+        cart_item_path(product[:id]),
+        method: :delete %>
+
+    <% end %>
+  </div>
+<% end %>
+
+<hr>
+
+<% if @cart.any? %>
+  <p>
+    🛒 Items in cart: <%= @cart.values.map(&:to_i).sum %>
+  </p>
+
+  <%= link_to "View Cart", "/cart" %>
+<% end %>
