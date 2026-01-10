@@ -1,10 +1,7 @@
 class CartsController < ApplicationController
   def show
-    @cart_items = redis.hgetall(cart_key)
-    @products = ProductCatalog.all.index_by { |p| p[:id] }
-
-    @line_items = build_line_items
-    @total_amount = @line_items.sum { |item| item[:line_total] }
+    load_cart
+    set_discount_eligibility_hint
   end
 
   private
@@ -13,8 +10,11 @@ class CartsController < ApplicationController
     "cart:#{@user_id}"
   end
 
-  def build_line_items
-    @cart_items.map do |product_id, quantity|
+  def load_cart
+    @cart_items = redis.hgetall(cart_key)
+    @products = ProductCatalog.all.index_by { |p| p[:id] }
+
+    @line_items = @cart_items.map do |product_id, quantity|
       product = @products[product_id]
 
       {
@@ -25,5 +25,14 @@ class CartsController < ApplicationController
         line_total: product[:price] * quantity.to_i
       }
     end
+
+    @subtotal = @line_items.sum { |i| i[:line_total] }.to_i
+  end
+
+  def set_discount_eligibility_hint
+    current_order_count = redis.get("orders:count").to_i
+    nth = CouponService.new(redis).config[:nth_order]
+
+    @eligible_for_discount = ((current_order_count + 1) % nth == 0)
   end
 end

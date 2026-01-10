@@ -25,7 +25,7 @@
 
 <% if @cart.any? %>
   <p>
-    🛒 Items in cart: <%= @cart.values.map(&:to_i).sum %>
+    Items in cart: <%= @cart.values.map(&:to_i).sum %>
   </p>
 
   <%= link_to "View Cart", "/cart" %>

@@ -1,0 +1,19 @@
+<h1>Order Placed Successfully</h1>
+
+<p><strong>Order number:</strong> <%= @order_count %></p>
+
+<% if @coupon_code.present? %>
+  <p style="color: green;">
+    This was your <strong><%= @order_count.ordinalize %></strong> order!
+  </p>
+  <p>
+    Coupon applied: <strong><%= @coupon_code %></strong>
+  </p>
+  <p>
+    Discount: ₹<%= @discount %>
+  </p>
+<% end %>
+
+<p><strong>Total Paid:</strong> ₹<%= @total_paid %></p>
+
+<%= link_to "Go to Home", root_path %>

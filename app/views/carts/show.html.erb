@@ -6,8 +6,6 @@
       <tr>
         <th>Product</th>
         <th>Price</th>
-        <th>Qty</th>
-        <th>Total</th>
         <th></th>
       </tr>
     </thead>
@@ -17,8 +15,6 @@
         <tr>
           <td><%= item[:name] %></td>
           <td>₹<%= item[:price] %></td>
-          <td><%= item[:quantity] %></td>
-          <td>₹<%= item[:line_total] %></td>
           <td>
             <%= button_to "Remove",
                   cart_item_path(item[:product_id]),
@@ -29,19 +25,21 @@
     </tbody>
   </table>
 
-  <p><strong>Total: ₹<%= @total_amount %></strong></p>
-
   <hr>
 
-  <h3>Apply Coupon</h3>
-  <form>
-    <input type="text" placeholder="Enter coupon code" />
-    <button disabled>Apply</button>
-  </form>
+  <p><strong>Subtotal: ₹<%= @subtotal %></strong></p>
+
+  <% if @eligible_for_discount %>
+    <p style="color: green;">
+      This order qualifies for a 10% discount!
+    </p>
+  <% end %>
 
   <br>
 
-  <button disabled>Confirm Order</button>
+  <%= form_with url: "/checkout", method: :post do %>
+    <button>Confirm Order</button>
+  <% end %>
 
 <% else %>
   <p>Your cart is empty.</p>
