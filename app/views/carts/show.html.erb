@@ -1,0 +1,49 @@
+<h1>Your Cart</h1>
+
+<% if @line_items.any? %>
+  <table border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @line_items.each do |item| %>
+        <tr>
+          <td><%= item[:name] %></td>
+          <td>₹<%= item[:price] %></td>
+          <td><%= item[:quantity] %></td>
+          <td>₹<%= item[:line_total] %></td>
+          <td>
+            <%= button_to "Remove",
+                  cart_item_path(item[:product_id]),
+                  method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><strong>Total: ₹<%= @total_amount %></strong></p>
+
+  <hr>
+
+  <h3>Apply Coupon</h3>
+  <form>
+    <input type="text" placeholder="Enter coupon code" />
+    <button disabled>Apply</button>
+  </form>
+
+  <br>
+
+  <button disabled>Confirm Order</button>
+
+<% else %>
+  <p>Your cart is empty.</p>
+  <%= link_to "Go back to products", root_path %>
+<% end %>
