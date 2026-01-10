@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   get "/checkout/success", to: "checkouts#success"
   namespace :admin do
     get "/dashboard", to: "dashboards#show"
+    post "/coupons",   to: "coupons#create"
   end
 end
