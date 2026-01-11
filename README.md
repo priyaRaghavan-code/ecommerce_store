@@ -27,6 +27,8 @@ This project focuses on cart handling, checkout flow, automatic discounts on eve
   - Total discount amount
   - List of generated discount codes
 
+- Admin POST coupon for creating coupon for the nth order. Nth order as well is configurable
+
 ---
 
 ## Discount Logic
@@ -45,7 +47,7 @@ This project focuses on cart handling, checkout flow, automatic discounts on eve
 - Ruby on Rails
 - Redis (in-memory store)
 - ERB views
-- RSpec (optional / can be added later)
+- RSpec
 
 ---
 
@@ -72,12 +74,12 @@ rails server
 ## Important Routes
 
 ```
-GET  /                 → Products page
-GET  /cart             → View cart
-POST /checkout         → Place order
-GET  /checkout/success → Order success page
-
-GET  /admin/dashboard  → Admin dashboard (protected)
+GET  /                 -> Products page
+GET  /cart             -> View cart
+POST /checkout         -> Place order
+GET  /checkout/success -> Order success page
+GET  /admin/dashboard  -> Admin dashboard
+POST /admin/coupons    -> Coupon creation
 ```
 
 ---
@@ -96,17 +98,4 @@ Example request:
 GET /admin/dashboard
 ```
 
-```
-POST /admin/coupons
-```
-
 ---
-
-## Data Storage
-
-- No database is used
-- All data is stored in Redis:
-  - Cart data
-  - Order count
-  - Discount metrics
-  - Admin dashboard aggregates
