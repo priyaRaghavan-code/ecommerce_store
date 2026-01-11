@@ -31,8 +31,9 @@ class CartsController < ApplicationController
 
   def set_discount_eligibility_hint
     current_order_count = redis.get("orders:count").to_i
-    nth = CouponService.new(redis).config[:nth_order]
-
-    @eligible_for_discount = ((current_order_count + 1) % nth == 0)
+    service = CouponService.new(redis)
+    discount = service.discount_amount(@subtotal)
+    @eligible_for_discount = ((current_order_count + 1) % service.config[:nth_order] == 0)
+    @total_after_discount = @subtotal - discount
   end
 end
